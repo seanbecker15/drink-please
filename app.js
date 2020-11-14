@@ -18,7 +18,7 @@ io.on('connection', socket => {
   socket.emit('test', { a: 'example'});
 
   socket.on('buzz', () => {
-    if (Boolean(buzzInterval)) {
+    if (Boolean(isBuzzing)) {
       clearInterval(buzzInterval);
     }
     isBuzzing = true;
@@ -29,15 +29,6 @@ io.on('connection', socket => {
     }, 5000);
   });
 
-  // handle the event sent with socket.send()
-  socket.on('message', (data) => {
-    console.log(data);
-  });
-
-  // handle the event sent with socket.emit()
-  socket.on('salutations', (elem1, elem2, elem3) => {
-    console.log(elem1, elem2, elem3);
-  });
 });
 
 
