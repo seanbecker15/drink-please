@@ -17,6 +17,6 @@ function buzz() {
     socket.emit('buzz');
 }
 
-window.onkeydown(() => {
+document.addEventListener("keydown", () => {
     socket.emit('buzz');
 });
