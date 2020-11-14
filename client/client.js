@@ -16,3 +16,7 @@ function buzz() {
     console.log('buzzing');
     socket.emit('buzz');
 }
+
+window.onkeydown(() => {
+    socket.emit('buzz');
+});
