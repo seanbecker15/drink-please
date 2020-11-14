@@ -3,6 +3,7 @@ var express = require('express');
 var app = express();
 const server = require('http').createServer(app);
 var io = require('socket.io')(server);
+const BUZZ_TIMER = 5000;
 
 server.listen(port, function () {
   console.log("Server running at port %s", port);
@@ -16,7 +17,7 @@ io.on('connection', socket => {
     io.to('everyone').emit('buzzing');
     buzzInterval = setInterval(() => {
       io.to('everyone').emit('clear');
-    }, 2000);
+    }, BUZZ_TIMER);
   }
   socket.on('buzz', () => {
     if (buzzInterval) {
