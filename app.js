@@ -8,27 +8,22 @@ server.listen(port, function () {
   console.log("Server running at port %s", port);
 });
 
-let isBuzzing = false;
 let buzzInterval;
 
 io.on('connection', socket => {
-  // either with send()
-  socket.send('Hello!');
-
-  socket.emit('test', { a: 'example'});
-
+  socket.join('everyone');
+  function buzz() {
+    io.to('everyone').emit('buzzing');
+    buzzInterval = setInterval(() => {
+      io.to('everyone').emit('clear');
+    }, 2000);
+  }
   socket.on('buzz', () => {
-    if (Boolean(isBuzzing)) {
+    if (buzzInterval) {
       clearInterval(buzzInterval);
     }
-    isBuzzing = true;
-    socket.emit('buzzing');
-    buzzInterval = setInterval(() => {
-      isBuzzing = false;
-      socket.emit('clear');
-    }, 5000);
+    buzz();
   });
-
 });
 
 
