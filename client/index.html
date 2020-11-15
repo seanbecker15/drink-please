@@ -26,7 +26,29 @@
         }
     </style>
     <div id="buzzer" class="inactive" onclick="buzz()">
-        <div id="text">Hey there</div>
+        <div style="position: absolute; top: 0; left: 0; text-align: left;">
+            <div id="user-details">
+                User details
+            </div>
+            <div id="room-details">
+                Room details
+            </div>
+        </div>
+        <div>
+            <div id="text">Hey there</div>
+            <br />
+            <div id="form-wrapper" style="display: block; text-align: right;">
+                <div id="room" style="display: none;">
+                    <label for="room">What's the room name</label>
+                    <input name="room" style="text-align: left;"/>
+                </div>
+                <div id="name" style="display: none;">
+                    <label for="name">What's your name</label>
+                    <input name="name" style="text-align: left;" />
+                </div>
+                <button id="submit" type="button" onclick="onSubmit()">Submit</button>
+            </div>
+        </div>
     </div>
 
     <script src="/socket.io/socket.io.js " type="text/javascript "></script>
