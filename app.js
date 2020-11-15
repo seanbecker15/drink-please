@@ -19,7 +19,7 @@ let roomIdNextVal = 1;
 io.on('connection', socket => {
   function emitRoomUpdate(room) {
     if (Boolean(room)) {
-      console.log('informing room...')
+      console.log('informing room...', { room })
       io.to(room.roomId).emit('roomUpdate', {
         room: {
           roomId: room.roomId,
@@ -27,6 +27,7 @@ io.on('connection', socket => {
           name: room.name,
           users: room.users,
           timerSetting: room.timerSetting,
+          activeDrinkingSeconds: room.activeDrinkingSeconds
         }
       });
     }
@@ -52,7 +53,12 @@ io.on('connection', socket => {
     }
   }
 
-  
+  socket.on('changeRoom', function ({ roomId, userId }) {
+    socket.leave(roomId);
+    rooms[roomId].users[userId].active = false;
+    socket.emit('enterRoomDetails');
+    socket.emit('enterUserDetails');
+  });
 
   // attempt to reconnect
   socket.on('reconnect', function (client) {
@@ -106,15 +112,24 @@ io.on('connection', socket => {
   // socket.join('everyone');
   function buzz(userName, room) {
     io.to(room.roomId).emit('buzzing', { name: userName });
-    room.buzzInterval = setInterval(() => {
+    room.buzzTimeoutId = setTimeout(() => {
       io.to(room.roomId).emit('clear');
+      room.activeDrinkingSeconds += (room.timerSetting / 1000);
+      console.log('active drinking seconds increased...', room.activeDrinkingSeconds);
+      room.buzzTimeoutId = null;
+      emitRoomUpdate(room);
     }, room.timerSetting);
   }
   socket.on('buzz', ({ userName, roomId }) => {
     let room;
     if (Boolean(userName) && Boolean(room = rooms[roomId])) {
-      if (room.buzzInterval) {
-        clearInterval(room.buzzInterval);
+      if (room.buzzTimeoutId) {
+        const timeLeft = getTimeLeft(room.buzzTimeoutId);
+        console.log('time remaining...', timeLeft);
+        room.activeDrinkingSeconds += (room.timerSetting / 1000) - timeLeft;
+        console.log('active drinking seconds increased...', room.activeDrinkingSeconds);
+        clearTimeout(room.buzzTimeoutId);
+        room.buzzTimeoutId = null;
       }
       buzz(userName, room);
     }
@@ -122,6 +137,9 @@ io.on('connection', socket => {
   });
 });
 
+function getTimeLeft(timeout) {
+  return Math.ceil((timeout._idleStart + timeout._idleTimeout)/1000 - process.uptime())
+}
 
 app.use(express.static(__dirname + "/client"));
 app.all("*", function (req, res) {

@@ -18,6 +18,10 @@
             color: #fff;
             font-size: 3rem;
         }
+        #buzzing-user {
+            color: #fff;
+            font-size: 1.5rem;
+        }
         .active {
             background-color: red;
         }
@@ -28,14 +32,18 @@
     <div id="buzzer" class="inactive" onclick="buzz()">
         <div style="position: absolute; top: 0; left: 0; text-align: left;">
             <div id="user-details">
-                User details
+                <div id="user-details-name"></div>
             </div>
             <div id="room-details">
-                Room details
+                <div id="room-details-name"></div>
+                <div id="room-details-drink-secs"></div>
+                <div id="room-details-num-users"></div>
             </div>
+            <button type="button" id="change-room" style="display: none;" >Change room</button>
         </div>
         <div>
             <div id="text">Hey there</div>
+            <div id="buzzing-user"></div>
             <br />
             <div id="form-wrapper" style="display: block; text-align: right;">
                 <div id="room" style="display: none;">

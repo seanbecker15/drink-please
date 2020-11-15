@@ -3,8 +3,9 @@ class Room {
     ownerId;
     name;
     users;
-    buzzInterval;
+    buzzTimeoutId;
     timerSetting;
+    activeDrinkingSeconds;
     constructor(roomId, roomName, owner) {
         this.roomId = roomId;
         this.name = roomName;
@@ -13,6 +14,7 @@ class Room {
             [owner.userId]: owner
         };
         this.timerSetting = 5000; // milliseconds
+        this.activeDrinkingSeconds = 0;
     }
     addUser(user) {
         this.users = {
