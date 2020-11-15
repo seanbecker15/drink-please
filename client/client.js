@@ -73,7 +73,8 @@ socket.on('enterUserDetails', () => {
 socket.on('roomUpdate', ({room: newRoom}) => {
     // update room details
     if (newRoom) {
-        window.location.href = `${BASE_URL}/${newRoom.name}`;
+        
+        window.history.pushState({"html":"","pageTitle": `Buzzer - ${newRoom.name}`},"", `${window.location.origin}/${newRoom.name}`);
         document.getElementById('room-details-name').innerText = `Room: ${newRoom.name}`;
         document.getElementById('room-details-drink-secs').innerText = `Active drinking seconds: ${newRoom.activeDrinkingSeconds}`;
         document.getElementById('room-details-num-users').innerText = `Num users: ${Object.values(newRoom.users).filter(u => u.active).length}`;
