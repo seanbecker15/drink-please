@@ -54,8 +54,12 @@ io.on('connection', socket => {
   }
 
   socket.on('changeRoom', function ({ roomId, userId }) {
-    socket.leave(roomId);
-    rooms[roomId].users[userId].active = false;
+    if (roomId) {
+      socket.leave(roomId);
+    }
+    if (rooms[roomId] && rooms[roomId].users[userId]) {
+      rooms[roomId].users[userId].active = false;
+    }
     socket.emit('enterRoomDetails');
     socket.emit('enterUserDetails');
   });
@@ -143,7 +147,7 @@ function getTimeLeft(timeout) {
 
 app.use(express.static(__dirname + "/client"));
 app.all("*", function (req, res) {
-    res.redirect("/");
+  res.sendFile(`${__dirname}/client/index.html`)
 });
 
 module.exports = app;

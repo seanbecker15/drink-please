@@ -1,6 +1,13 @@
 const socket = io();
 
 let user, room;
+let defRoomName = ''
+const { pathname } = window.location;
+if (pathname && pathname !== "" && pathname !== "/") {
+    defRoomName = pathname.startsWith("/") ? pathname.substring(1) : pathname;
+}
+
+document.getElementsByName('room')[0].value = defRoomName;
 
 socket.on('clear', function () {
     const buzzer = document.getElementById('buzzer');
@@ -66,6 +73,7 @@ socket.on('enterUserDetails', () => {
 socket.on('roomUpdate', ({room: newRoom}) => {
     // update room details
     if (newRoom) {
+        window.location.href = `${BASE_URL}/${newRoom.name}`;
         document.getElementById('room-details-name').innerText = `Room: ${newRoom.name}`;
         document.getElementById('room-details-drink-secs').innerText = `Active drinking seconds: ${newRoom.activeDrinkingSeconds}`;
         document.getElementById('room-details-num-users').innerText = `Num users: ${Object.values(newRoom.users).filter(u => u.active).length}`;
