@@ -21,6 +21,8 @@ socket.on('buzzing', function ({ name }) {
     buzzer.className = 'buzzer active';
     document.getElementById('text').innerText = 'Drink bitch ;)';
     document.getElementById('buzzing-user').innerText = name;
+    const audio = new Audio('/public/sounds/can-open.mp3');
+    audio.play();
 });
 
 const buzz = () => {
