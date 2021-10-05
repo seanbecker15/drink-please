@@ -74,13 +74,13 @@ socket.on('enterUserDetails', () => {
 
 socket.on('roomUpdate', ({room: newRoom}) => {
     // update room details
-    const currentUserId = localStorage.getItem(profileKeys.userId);
-    const currentUserName = newRoom.users[currentUserId].name;
     if (newRoom) {
         window.history.pushState({"html":"","pageTitle": `Buzzer - ${newRoom.name}`},"", `${window.location.origin}/${newRoom.name}`);
         document.getElementById('room-details-name').innerText = `Room: ${newRoom.name}`;
         document.getElementById('room-details-drink-secs').innerText = `Active drinking seconds: ${newRoom.activeDrinkingSeconds}`;
         document.getElementById('room-details-num-users').innerText = `Num users: ${Object.values(newRoom.users).filter(u => u.active).length}`;
+        const currentUserId = localStorage.getItem(profileKeys.userId);
+        const currentUserName = newRoom.users[currentUserId].name;
         const userList = Object.values(newRoom.users)
             .filter(u => u.active)
             .sort((u1, u2) => {
