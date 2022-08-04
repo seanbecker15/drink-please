@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Buzzer</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
 </head>
 <body style="margin: 0; width:100vw; height: 100vh;">
     <style>
@@ -31,15 +32,17 @@
     </style>
     <div id="buzzer" class="inactive" onclick="buzz()">
         <div style="position: absolute; top: 0; left: 0; text-align: left;">
-            <div id="user-details">
-                <div id="user-details-name"></div>
-            </div>
             <div id="room-details">
                 <div id="room-details-name"></div>
                 <div id="room-details-drink-secs"></div>
                 <div id="room-details-num-users"></div>
             </div>
             <button type="button" id="change-room" style="display: none;" >Change room</button>
+        </div>
+        <div style="position: absolute; top: 0; right: 0; text-align: right;">
+            <div id="user-details">
+                <div id="room-details-active-users"></div>
+            </div>
         </div>
         <div>
             <div id="text">Hey there</div>
